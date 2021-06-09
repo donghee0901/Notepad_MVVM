@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.example.notepad_mvvm.dataClass.FilterData" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/addFilterItemStroke"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/radius"
+        android:orientation="horizontal"
+        android:paddingVertical="10dp">
+
+        <View
+            android:id="@+id/addFilterTagColor"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/circle"
+            android:backgroundTint="@{item.tagColor}"
+            tools:backgroundTint="@color/pink" />
+
+        <TextView
+            android:id="@+id/addFilterTagName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="@{item.tagName}"
+            android:textSize="35sp"
+            tools:text="태그" />
+
+    </LinearLayout>
+</layout>

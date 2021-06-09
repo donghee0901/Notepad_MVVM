@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    
+    <data>
+        <variable
+            name="mainViewModel"
+            type="com.example.notepad_mvvm.viewModel.MainActivityViewModel" />
+    </data>
+    
+<androidx.constraintlayout.motion.widget.MotionLayout
+    android:id="@+id/motionLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layoutDescription="@xml/scene_01"
+    android:background="@color/skin"
+    tools:showPaths="true">
+
+
+    <View
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:background="@color/headerColor">
+
+    </View>
+
+
+    <TextView
+        android:id="@+id/topBarText"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:layout_marginHorizontal="20dp"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:text="Note"
+        android:textSize="72sp"
+        android:textColor="@color/white"
+        android:background="@color/headerColor"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/filter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="10dp"
+        android:background="@color/headerColor"
+        tools:listitem="@layout/tag_item"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:orientation="horizontal"/>
+
+    <LinearLayout
+        android:id="@+id/linear"
+        app:layout_constraintTop_toBottomOf="@+id/filter"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:paddingBottom="70dp">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/memoBox"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never"
+        tools:listitem="@layout/preview_item"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="2"
+        android:orientation="vertical"/>
+
+
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addMemoButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_add_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="16dp"
+        />
+
+
+</androidx.constraintlayout.motion.widget.MotionLayout>
+
+</layout>
