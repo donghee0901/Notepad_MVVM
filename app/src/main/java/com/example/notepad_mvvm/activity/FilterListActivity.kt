@@ -3,13 +3,11 @@ package com.example.notepad_mvvm.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.notepad_mvvm.R
+import com.example.notepad_mvvm.ItemTouchHelperManager.registerSwiper
+import com.example.notepad_mvvm.adapter.FilterListAdapterEvent
 import com.example.notepad_mvvm.adapter.FilterListAdapter
+import com.example.notepad_mvvm.dataClass.FilterData
 import com.example.notepad_mvvm.database.FilterDao
 import com.example.notepad_mvvm.database.FilterDatabase
 import com.example.notepad_mvvm.database.FilterRepository
@@ -21,47 +19,49 @@ class FilterListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityFilterListBinding
     private lateinit var viewModel: FilterListActivityViewModel
     private lateinit var viewModelFactory: FilterListActivityViewModelFactory
-    private lateinit var adapter: FilterListAdapter
+    private lateinit var filterAdapter: FilterListAdapter
     private lateinit var dao : FilterDao
     private lateinit var filterRepository: FilterRepository
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_filter_list)
+        binding = ActivityFilterListBinding.inflate(layoutInflater)
 
         dao = FilterDatabase.getInstance(application).getFilterDao()
         filterRepository = FilterRepository(dao)
         viewModelFactory = FilterListActivityViewModelFactory(filterRepository)
+
         viewModel =
             ViewModelProvider(this, viewModelFactory).get(FilterListActivityViewModel::class.java)
+
         binding.apply {
             filterListViewModel = viewModel
             lifecycleOwner = this@FilterListActivity
         }
 
-        adapter = FilterListAdapter(ArrayList())
-        binding.addFilterView.adapter = adapter
-        binding.addFilterView.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        val event = object : FilterListAdapterEvent {
+            override fun itemClickEvent(filterData: FilterData) {
+                val intent = Intent(this@FilterListActivity, AddFilterActivity::class.java).apply {
+                    putExtra("selectData", filterData)
+                }
+                setResult(RESULT_OK, intent)
+                finish()
+            }
+        }
+
+        filterAdapter = FilterListAdapter(event)
+        binding.addFilterView.adapter = filterAdapter
+
         viewModel.filterData.observe(this) {
-            adapter.setList(it)
+            filterAdapter.list.submitList(it)
         }
 
         binding.addTagButton.setOnClickListener {
             startActivity(Intent(this, AddFilterActivity::class.java))
         }
 
-        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
-            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-                return true
-            }
-
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                // Adapter에 아이템 삭제 요청
-                (binding.addFilterView.adapter as FilterListAdapter).removeItem(viewHolder.adapterPosition) { viewModel.deleteData(it) }
-            }
-        }).apply {
-            // ItemTouchHelper에 RecyclerView 설정
-            attachToRecyclerView(binding.addFilterView)
+        binding.addFilterView.registerSwiper{ viewHolder, _ ->
+            viewModel.deleteData(filterAdapter.list.currentList[viewHolder.adapterPosition])
         }
+        setContentView(binding.root)
     }
 }

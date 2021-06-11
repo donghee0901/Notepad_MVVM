@@ -9,13 +9,8 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class FilterListActivityViewModel(val filterRepository: FilterRepository) : ViewModel() {
-    private val filterLiveData = MutableLiveData<List<FilterData>>()
     val filterData = liveData {
         filterRepository.filter.collect { emit(it) }
-    }
-
-    init {
-
     }
 
     fun deleteData(filterData: FilterData){

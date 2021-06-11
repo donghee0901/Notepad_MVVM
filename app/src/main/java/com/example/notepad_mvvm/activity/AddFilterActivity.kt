@@ -35,11 +35,16 @@ class AddFilterActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_add_filter)
+        binding = ActivityAddFilterBinding.inflate(layoutInflater)
+
+        val selectData : FilterData? = intent.extras?.get("selectData") as FilterData?
+
         val dao : FilterDao = FilterDatabase.getInstance(application).getFilterDao()
         val repository = FilterRepository(dao)
-        val factory = AddFilterActivityViewModelFactory(repository)
+        val factory = AddFilterActivityViewModelFactory(repository, selectData)
+
         viewModel = ViewModelProvider(this, factory).get(AddFilterActivityViewModel::class.java)
+
         binding.addFilterViewModel = viewModel
         binding.lifecycleOwner = this
 
@@ -56,7 +61,7 @@ class AddFilterActivity : AppCompatActivity() {
                     .setDefaultColor("#ffffff")     // Pass Default Color
                     .setColorListener { color, colorHex ->
                         it.background.setTint(color)
-                        selectColorHex.text = colorHex
+                        viewModel.filterColorHex.value = colorHex
                         viewModel.changeFilterColor(color)
                         stroke?.setStroke(20, color)
                         saveFilterButton.background.setTint(color)
@@ -69,5 +74,7 @@ class AddFilterActivity : AppCompatActivity() {
                 finish()
             }
         }
+
+        setContentView(binding.root)
     }
 }

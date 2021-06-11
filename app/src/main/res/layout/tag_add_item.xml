@@ -3,14 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-
-        <variable
-            name="data"
-            type="com.example.notepad_mvvm.dataClass.FilterData" />
-
-    </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="32dp"
@@ -24,8 +16,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_gravity="center"
-            android:background="@drawable/circle"
-            android:backgroundTint="@{data.tagColor}"
+            android:background="@drawable/ic_baseline_add_24"
             tools:backgroundTint="@color/pink"
             android:layout_marginRight="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -39,8 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@{data.tagName}"
-            tools:text="TAG"
+            android:text="추가"
             android:textSize="14sp"
             android:textColor="@color/textColor"
             app:layout_constraintBottom_toBottomOf="parent"
