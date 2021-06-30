@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import com.example.notepad_mvvm.dataClass.FilterData
+import com.example.notepad_mvvm.dataClass.NoteData
 import com.example.notepad_mvvm.database.NoteRepository
 import kotlinx.coroutines.flow.collect
 
@@ -35,5 +36,9 @@ class MainActivityViewModel(private val repository: NoteRepository) : ViewModel(
         currentData.addAll(arrayListOf(data, addFilterButton))
 
         _selectFilter.value = ArrayList(currentData.distinctBy { it.id })
+    }
+
+    suspend fun deleteNote(data: NoteData) {
+        repository.deleteNote(data)
     }
 }

@@ -21,6 +21,7 @@ import com.example.notepad_mvvm.database.NoteRepository
 import com.example.notepad_mvvm.viewModel.MainActivityViewModel
 import com.example.notepad_mvvm.databinding.ActivityMainBinding
 import com.example.notepad_mvvm.viewModelFactory.MainActivityViewModelFactory
+import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -100,6 +101,12 @@ class MainActivity : AppCompatActivity() {
                     putExtra("selectData", noteData)
                 }
                 startActivity(intent)
+            }
+
+            override fun itemDeleteEvent(noteData: NoteData) {
+                CoroutineScope(Dispatchers.IO).launch {
+                    viewModel.deleteNote(noteData)
+                }
             }
         }
         noteListAdapter = NoteListAdapter(event)

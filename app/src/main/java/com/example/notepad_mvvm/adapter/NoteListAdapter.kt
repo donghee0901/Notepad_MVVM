@@ -1,5 +1,8 @@
 package com.example.notepad_mvvm.adapter
 
+import android.app.AlertDialog
+import android.content.Context
+import android.content.DialogInterface
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -10,7 +13,7 @@ import com.example.notepad_mvvm.databinding.NoteItemBinding
 
 class NoteListAdapter(val event: NoteListAdapterEvent) : RecyclerView.Adapter<NoteListAdapter.NoteListViewHolder>() {
 
-    inner class NoteListViewHolder(private val binding : NoteItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class NoteListViewHolder(private val binding : NoteItemBinding, private val context: Context) : RecyclerView.ViewHolder(binding.root) {
         val adapter = NoteFilterListAdapter()
         fun bind(data : NoteData) {
             binding.data = data
@@ -19,6 +22,24 @@ class NoteListAdapter(val event: NoteListAdapterEvent) : RecyclerView.Adapter<No
             binding.root.setOnClickListener {
                 event.itemClickEvent(data)
             }
+            binding.root.setOnLongClickListener {
+                makeDialog(data)
+                true
+            }
+        }
+
+        private fun makeDialog(data: NoteData) {
+            val myDialog = AlertDialog.Builder(context, android.R.style.Theme_DeviceDefault_Light_Dialog)
+
+            myDialog.setMessage("메모를 삭제하시겠습니까?")
+                .setTitle("삭제")
+                .setPositiveButton("예") { _, _ ->
+                    event.itemDeleteEvent(data)
+                }
+                .setNegativeButton("아니오") { _, _ ->
+
+                }
+                .show()
         }
     }
 
@@ -32,7 +53,7 @@ class NoteListAdapter(val event: NoteListAdapterEvent) : RecyclerView.Adapter<No
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteListViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        return NoteListViewHolder(NoteItemBinding.inflate(inflater, parent, false))
+        return NoteListViewHolder(NoteItemBinding.inflate(inflater, parent, false), parent.context)
     }
 
     override fun onBindViewHolder(holder: NoteListViewHolder, position: Int) {
