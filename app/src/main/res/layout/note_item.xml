@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="data"
+            type="com.example.notepad_mvvm.dataClass.NoteData" />
+    </data>
+    
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:padding="10dp"
+        android:layout_margin="10dp"
+        android:orientation="vertical"
+        android:background="@drawable/radius"
+        android:backgroundTint="@color/white">
+    
+        <TextView
+            android:id="@+id/noteTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:textSize="24sp"
+            android:textColor="@color/textColor"
+            tools:text="제목임"
+            android:text="@{data.title}"
+            />
+    
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/textColor"/>
+    
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/noteFilter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/note_color_item"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="horizontal"
+            app:reverseLayout="true"/>
+    
+        <TextView
+            android:id="@+id/noteContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:layout_gravity="center"
+            tools:text="내용임"
+            android:text="@{data.context}"
+            android:textSize="12sp"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tagColor"
+            android:layout_marginHorizontal="2dp"/>
+    
+    </LinearLayout>
+</layout>

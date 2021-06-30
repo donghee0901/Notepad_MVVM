@@ -39,10 +39,12 @@ class SelectFilterAdapter(val event: SelectFilterAdapterEvent) : RecyclerView.Ad
 
     private val differ = object : DiffUtil.ItemCallback<FilterData>(){
         override fun areItemsTheSame(oldItem: FilterData, newItem: FilterData): Boolean {
+            Log.d("Differ", "areItemsTheSame: $oldItem, $newItem")
             return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(oldItem: FilterData, newItem: FilterData): Boolean {
+            Log.d("Differ", "areContentsTheSame: $oldItem, $newItem")
             return oldItem == newItem
         }
 

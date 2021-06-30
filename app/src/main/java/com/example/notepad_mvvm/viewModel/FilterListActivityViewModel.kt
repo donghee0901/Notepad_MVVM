@@ -8,7 +8,7 @@ import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class FilterListActivityViewModel(val filterRepository: FilterRepository) : ViewModel() {
+class FilterListActivityViewModel(private val filterRepository: FilterRepository) : ViewModel() {
     val filterData = liveData {
         filterRepository.filter.collect { emit(it) }
     }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="color"
+            type="Integer" />
+    </data>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingVertical="5dp">
+
+        <View
+            android:id="@+id/previewColorItem"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:background="@drawable/circle"
+            tools:backgroundTint="@color/pink"
+            color_background="@{color}"/>
+
+    </LinearLayout>
+</layout>
